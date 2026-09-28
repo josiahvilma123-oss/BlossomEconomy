@@ -1,5 +1,5 @@
 # ============================================
-#   ❀ BlossomEconomy 2.2 - Blossom SMP ❀
+#   ❀ BlossomEconomy 2.3 - Blossom SMP ❀
 # ============================================
 # Colours: &a, &d, &l ... and hex colours like &#FF69B4
 # After editing, run: /eco reload
@@ -55,6 +55,18 @@ market:
   # Every recovery-minutes, prices move this % of the way back to normal
   recovery-percent: 5
   recovery-minutes: 5
+
+# ----------------------------------------------
+# Daily rewards (/daily)
+# Claim once every cooldown-hours. Claim again within streak-reset-hours
+# to keep your streak; miss it and you start again at day 1.
+# ----------------------------------------------
+daily-rewards:
+  enabled: true
+  cooldown-hours: 24
+  streak-reset-hours: 48
+  # Money for day 1, day 2, day 3... After the last day, the last amount repeats.
+  rewards: [100, 150, 200, 300, 400, 500, 1000]
 
 # ----------------------------------------------
 # Auction house (/ah)
@@ -389,6 +401,11 @@ messages:
   creative-sell-blocked: "&cYou can't sell items while in creative mode."
   kill-reward: "&7You killed &f%player% &7and earned &a%amount%&7!"
   kill-lost: "&f%player% &7killed you and took &c%amount%&7."
+  daily-claimed: "&#FF69B4&lDAILY REWARD! &7Day &f%day% &7streak: &a+%amount%"
+  daily-next: "&7Come back tomorrow for &a%amount%&7!"
+  daily-wait: "&cYou already claimed today. Come back in &f%time%&c."
+  daily-reminder: "&7Your daily reward is ready! Type &f/daily &7to claim it."
+  daily-disabled: "&cDaily rewards are turned off."
   ah-usage: "&cUsage: /ah&7, &c/ah sell <price>&7, &c/ah mine &7or &c/ah collect"
   ah-listed: "&7You listed &f%count%x %item% &7for &a%amount%&7."
   ah-max: "&cYou can only have &f%max% &citems listed at once."

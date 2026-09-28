@@ -1,5 +1,5 @@
 name: BlossomEconomy
-version: 2.2.0
+version: 2.3.0
 main: com.blossomsmp.economy.BlossomEconomy
 api-version: '1.21'
 author: BlossomSMP
@@ -24,6 +24,9 @@ commands:
     description: Sell the item in your hand
   worth:
     description: Check the live price of the item in your hand
+  daily:
+    description: Claim your daily reward
+    aliases: [dailyreward, reward]
   ah:
     description: Open the auction house
     aliases: [auctionhouse, auction, auctions]

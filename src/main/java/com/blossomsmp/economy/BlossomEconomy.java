@@ -2,6 +2,7 @@ package com.blossomsmp.economy;
 
 import com.blossomsmp.economy.commands.AuctionCommand;
 import com.blossomsmp.economy.commands.BalanceCommand;
+import com.blossomsmp.economy.commands.DailyCommand;
 import com.blossomsmp.economy.commands.BaltopCommand;
 import com.blossomsmp.economy.commands.EcoCommand;
 import com.blossomsmp.economy.commands.PayCommand;
@@ -35,6 +36,7 @@ public final class BlossomEconomy extends JavaPlugin {
     private MarketManager market;
     private ShopManager shop;
     private AuctionManager auctions;
+    private DailyManager daily;
 
     @Override
     public void onEnable() {
@@ -49,6 +51,8 @@ public final class BlossomEconomy extends JavaPlugin {
         shop.load();
         auctions = new AuctionManager(this);
         auctions.load();
+        daily = new DailyManager(this);
+        daily.load();
 
         // Become the server's money for every Vault plugin
         getServer().getServicesManager().register(Economy.class, new VaultEconomy(this, economy),
@@ -62,6 +66,7 @@ public final class BlossomEconomy extends JavaPlugin {
         register("sell", new SellCommand(this));
         register("worth", new WorthCommand(this));
         register("ah", new AuctionCommand(this));
+        register("daily", new DailyCommand(this));
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new MenuListener(this), this);
@@ -110,6 +115,9 @@ public final class BlossomEconomy extends JavaPlugin {
         if (auctions != null) {
             auctions.save();
         }
+        if (daily != null) {
+            daily.save();
+        }
         getServer().getServicesManager().unregisterAll(this);
     }
 
@@ -153,5 +161,9 @@ public final class BlossomEconomy extends JavaPlugin {
 
     public AuctionManager getAuctions() {
         return auctions;
+    }
+
+    public DailyManager getDaily() {
+        return daily;
     }
 }

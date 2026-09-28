@@ -18,6 +18,7 @@ The all-in-one economy plugin for Blossom SMP (Paper 1.21.11, needs Vault).
 - `/worth` - live price of the item in your hand
 - `/eco give|take|set|reset <player> <amount>` `/eco reload` and `/eco resetmarket` (permission `blossom.admin`)
 - PvP kill rewards with an anti-farm cooldown
+- `/daily` rewards with login streaks (day 1 $100 up to day 7 $1,000)
 - Starting balance for new players
 - Everything (prices, messages, colours) is editable in `config.yml`
 
