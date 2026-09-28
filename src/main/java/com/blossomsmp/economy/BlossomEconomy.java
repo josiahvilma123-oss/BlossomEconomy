@@ -1,0 +1,120 @@
+package com.blossomsmp.economy;
+
+import com.blossomsmp.economy.commands.BalanceCommand;
+import com.blossomsmp.economy.commands.BaltopCommand;
+import com.blossomsmp.economy.commands.EcoCommand;
+import com.blossomsmp.economy.commands.PayCommand;
+import com.blossomsmp.economy.commands.SellCommand;
+import com.blossomsmp.economy.commands.ShopCommand;
+import com.blossomsmp.economy.commands.WorthCommand;
+import com.blossomsmp.economy.listeners.KillRewardListener;
+import com.blossomsmp.economy.listeners.MenuListener;
+import com.blossomsmp.economy.listeners.PlayerListener;
+import com.blossomsmp.economy.menus.MenuHolder;
+import com.blossomsmp.economy.menus.Menus;
+import com.blossomsmp.economy.util.Text;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.ServicePriority;
+import org.bukkit.plugin.java.JavaPlugin;
+
+/**
+ * BlossomEconomy - the all-in-one Blossom SMP economy.
+ * Money, /shop, /sell, /pay, /baltop, /eco, /worth and PvP kill rewards.
+ */
+public final class BlossomEconomy extends JavaPlugin {
+
+    private EconomyManager economy;
+    private ShopManager shop;
+
+    @Override
+    public void onEnable() {
+        saveDefaultConfig();
+
+        economy = new EconomyManager(this);
+        economy.load();
+        shop = new ShopManager(this);
+        shop.load();
+
+        // Become the server's money for every Vault plugin
+        getServer().getServicesManager().register(Economy.class, new VaultEconomy(this, economy),
+                this, ServicePriority.Highest);
+
+        register("balance", new BalanceCommand(this));
+        register("pay", new PayCommand(this));
+        register("baltop", new BaltopCommand(this));
+        register("eco", new EcoCommand(this));
+        register("shop", new ShopCommand(this));
+        register("sell", new SellCommand(this));
+        register("worth", new WorthCommand(this));
+
+        PluginManager pm = getServer().getPluginManager();
+        pm.registerEvents(new MenuListener(this), this);
+        pm.registerEvents(new PlayerListener(this), this);
+        pm.registerEvents(new KillRewardListener(this), this);
+
+        long interval = 20L * 60L * Math.max(1, getConfig().getInt("autosave-minutes", 5));
+        getServer().getScheduler().runTaskTimer(this, economy::saveIfDirty, interval, interval);
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            economy.createAccount(player.getUniqueId(), player.getName());
+        }
+        getLogger().info("BlossomEconomy is enabled and registered with Vault.");
+    }
+
+    @Override
+    public void onDisable() {
+        // Sell anything left in open sell menus so nobody loses items on shutdown
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Inventory top = player.getOpenInventory().getTopInventory();
+            if (top.getHolder() instanceof MenuHolder holder) {
+                if (holder.getType() == MenuHolder.Type.SELL && economy != null && shop != null) {
+                    Menus.sellMenuContents(this, player, top);
+                }
+                player.closeInventory();
+            }
+        }
+        if (economy != null) {
+            economy.save();
+        }
+        getServer().getServicesManager().unregisterAll(this);
+    }
+
+    private void register(String name, TabExecutor executor) {
+        PluginCommand command = getCommand(name);
+        if (command == null) {
+            getLogger().severe("Command '" + name + "' is missing from plugin.yml!");
+            return;
+        }
+        command.setExecutor(executor);
+        command.setTabCompleter(executor);
+    }
+
+    /** /eco reload */
+    public void reload() {
+        reloadConfig();
+        shop.load();
+    }
+
+    /** Gets a message from config.yml with the prefix and replacements ("%key%", "value", ...). */
+    public String msg(String key, String... replacements) {
+        String text = getConfig().getString("messages." + key, "&cMissing message: " + key);
+        for (int i = 0; i + 1 < replacements.length; i += 2) {
+            text = text.replace(replacements[i], replacements[i + 1]);
+        }
+        return Text.color(getConfig().getString("messages.prefix", "") + text);
+    }
+
+    public EconomyManager getEconomy() {
+        return economy;
+    }
+
+    public ShopManager getShop() {
+        return shop;
+    }
+}

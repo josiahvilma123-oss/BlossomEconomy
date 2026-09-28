@@ -1,0 +1,222 @@
+# ============================================
+#   ❀ BlossomEconomy - Blossom SMP ❀
+# ============================================
+# Colours: &a, &d, &l ... and hex colours like &#FF69B4
+# After editing, run: /eco reload
+
+# Money every new player starts with
+starting-balance: 500
+
+# How often balances are saved to disk (minutes)
+autosave-minutes: 5
+
+# Smallest amount allowed with /pay
+min-pay: 1
+
+# ----------------------------------------------
+# PvP kill rewards
+# ----------------------------------------------
+kill-rewards:
+  enabled: true
+  # Money the killer gets for every player kill
+  amount: 50
+  # Extra % of the victim's balance moved to the killer (0 = off)
+  steal-percent: 0
+  # Seconds before killing the SAME player pays again (stops kill farming)
+  same-victim-cooldown: 300
+
+# ----------------------------------------------
+# Shop (/shop)
+# Prices are what players PAY for 1 item.
+# Items in the shop can be sold back for (buy price x sell-ratio),
+# unless they have their own price under sell-prices below.
+# Max 45 items per category.
+# ----------------------------------------------
+shop:
+  title: "&#FF69B4&l❀ Blossom Shop"
+  sell-ratio: 0.3
+  categories:
+    blocks:
+      name: "&#FF69B4&lBlocks"
+      icon: CHERRY_LOG
+      slot: 10
+      items:
+        GRASS_BLOCK: 2
+        DIRT: 0.5
+        STONE: 1
+        COBBLESTONE: 0.5
+        COBBLED_DEEPSLATE: 0.5
+        SMOOTH_STONE: 1.5
+        SAND: 1
+        GRAVEL: 1
+        CLAY: 3
+        GLASS: 2
+        BRICKS: 3
+        QUARTZ_BLOCK: 8
+        TERRACOTTA: 2
+        WHITE_WOOL: 3
+        OAK_LOG: 5
+        SPRUCE_LOG: 5
+        BIRCH_LOG: 5
+        DARK_OAK_LOG: 5
+        CHERRY_LOG: 6
+        CHERRY_LEAVES: 2
+    farming:
+      name: "&#FF69B4&lFarming"
+      icon: WHEAT_SEEDS
+      slot: 11
+      items:
+        WHEAT_SEEDS: 1
+        CARROT: 2
+        POTATO: 2
+        BEETROOT_SEEDS: 1
+        MELON_SEEDS: 3
+        PUMPKIN_SEEDS: 3
+        SUGAR_CANE: 3
+        CACTUS: 3
+        BAMBOO: 2
+        COCOA_BEANS: 3
+        NETHER_WART: 8
+        SWEET_BERRIES: 2
+        BONE_MEAL: 1
+        OAK_SAPLING: 5
+        CHERRY_SAPLING: 8
+    food:
+      name: "&#FF69B4&lFood"
+      icon: COOKED_BEEF
+      slot: 12
+      items:
+        APPLE: 3
+        BREAD: 4
+        BAKED_POTATO: 3
+        COOKED_CHICKEN: 5
+        COOKED_PORKCHOP: 6
+        COOKED_BEEF: 6
+        GOLDEN_CARROT: 12
+        CAKE: 20
+        GOLDEN_APPLE: 60
+    mobdrops:
+      name: "&#FF69B4&lMob Drops"
+      icon: BONE
+      slot: 14
+      items:
+        ROTTEN_FLESH: 0.5
+        BONE: 2
+        STRING: 2
+        SPIDER_EYE: 3
+        GUNPOWDER: 5
+        SLIME_BALL: 8
+        LEATHER: 4
+        FEATHER: 2
+        ENDER_PEARL: 20
+        BLAZE_ROD: 25
+        PHANTOM_MEMBRANE: 15
+    combat:
+      name: "&#FF69B4&lCombat"
+      icon: DIAMOND_SWORD
+      slot: 15
+      items:
+        ARROW: 1
+        COBWEB: 10
+        SHIELD: 30
+        OBSIDIAN: 15
+        GLOWSTONE: 8
+        RESPAWN_ANCHOR: 150
+        END_CRYSTAL: 75
+        EXPERIENCE_BOTTLE: 30
+        TOTEM_OF_UNDYING: 500
+    netherend:
+      name: "&#FF69B4&lNether & End"
+      icon: ENDER_EYE
+      slot: 16
+      items:
+        NETHERRACK: 0.5
+        SOUL_SAND: 2
+        MAGMA_BLOCK: 4
+        QUARTZ: 3
+        GLOWSTONE_DUST: 2
+        BLAZE_POWDER: 15
+        CRYING_OBSIDIAN: 25
+        END_STONE: 1
+        CHORUS_FRUIT: 3
+        SHULKER_SHELL: 150
+
+# ----------------------------------------------
+# Sell prices for items NOT in the shop (price for 1 item)
+# ----------------------------------------------
+sell-prices:
+  COAL: 1
+  RAW_COPPER: 0.5
+  COPPER_INGOT: 1
+  RAW_IRON: 3
+  IRON_INGOT: 4
+  RAW_GOLD: 5
+  GOLD_INGOT: 6
+  REDSTONE: 0.5
+  LAPIS_LAZULI: 1
+  AMETHYST_SHARD: 2
+  EMERALD: 20
+  DIAMOND: 40
+  ANCIENT_DEBRIS: 150
+  NETHERITE_SCRAP: 180
+  NETHERITE_INGOT: 800
+  COAL_BLOCK: 9
+  COPPER_BLOCK: 9
+  IRON_BLOCK: 36
+  GOLD_BLOCK: 54
+  REDSTONE_BLOCK: 4.5
+  LAPIS_BLOCK: 9
+  EMERALD_BLOCK: 180
+  DIAMOND_BLOCK: 360
+  NETHERITE_BLOCK: 7200
+  WHEAT: 0.5
+  HAY_BLOCK: 4.5
+  PUMPKIN: 1
+  MELON_SLICE: 0.3
+  MELON: 2.7
+  BEETROOT: 0.5
+  EGG: 0.3
+  PRISMARINE_SHARD: 1
+  NAUTILUS_SHELL: 30
+  GHAST_TEAR: 20
+
+# ----------------------------------------------
+# Menus
+# ----------------------------------------------
+menus:
+  sell-title: "&#FF69B4&l❀ Sell &8(close to sell)"
+  filler: PINK_STAINED_GLASS_PANE
+
+# ----------------------------------------------
+# Messages
+# %amount% = money, %player% = name, %count% = number of items
+# ----------------------------------------------
+messages:
+  prefix: "&#FF69B4&l❀ &8» &r"
+  players-only: "&cOnly players can use this."
+  player-not-found: "&cThat player has never joined the server."
+  invalid-amount: "&cThat's not a valid amount. Examples: &f100&c, &f2.5k&c, &f1m"
+  not-enough-money: "&cYou don't have enough money! &7(Balance: &a%amount%&7)"
+  balance-self: "&7Your balance: &a%amount%"
+  balance-other: "&f%player%&7's balance: &a%amount%"
+  pay-self: "&cYou can't pay yourself."
+  pay-min: "&cThe minimum you can pay is &a%amount%&c."
+  pay-sent: "&7You sent &a%amount% &7to &f%player%&7."
+  pay-received: "&7You received &a%amount% &7from &f%player%&7."
+  baltop-header: "&#FF69B4&l❀ Richest Players ❀"
+  baltop-line: "&#FFB6C1#%rank% &f%player% &8- &a%amount%"
+  baltop-footer: "&7Your rank: &#FFB6C1#%rank%"
+  eco-usage: "&cUsage: /eco <give|take|set|reset> <player> <amount> &7or &c/eco reload"
+  eco-done: "&7%player%&7's balance is now &a%amount%&7."
+  eco-reloaded: "&aBlossomEconomy config reloaded."
+  bought: "&7You bought &f%count%x %item% &7for &a%amount%&7."
+  inventory-full: "&cYou don't have enough inventory space."
+  sold: "&7You sold &f%count% &7items for &a%amount%&7."
+  nothing-sold: "&cNone of those items can be sold."
+  returned: "&7Items that can't be sold were given back to you."
+  worth: "&f%item% &7sells for &a%amount% &7each &8(&a%stack% &7for this stack&8)"
+  worthless: "&cThat item can't be sold."
+  hold-item: "&cHold an item in your hand first."
+  sell-usage: "&cUsage: /sell &7(menu)&c, /sell hand &7or &c/sell all"
+  kill-reward: "&7You killed &f%player% &7and earned &a%amount%&7!"
+  kill-lost: "&f%player% &7killed you and took &c%amount%&7."
