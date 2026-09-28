@@ -1,0 +1,40 @@
+name: BlossomEconomy
+version: 2.4.0
+main: com.blossomsmp.economy.BlossomEconomy
+api-version: '1.21'
+author: BlossomSMP
+description: The all-in-one Blossom SMP economy (money, live market, shop, sell, auction house, pay, baltop, kill rewards).
+depend: [Vault]
+
+commands:
+  balance:
+    description: Check your balance or another player's balance
+    aliases: [bal, money]
+  pay:
+    description: Send money to another player
+  baltop:
+    description: Show the richest players
+    aliases: [balancetop, moneytop]
+  eco:
+    description: Admin money commands
+    permission: blossom.admin
+  shop:
+    description: Open the Blossom shop
+  sell:
+    description: Sell the item in your hand
+  worth:
+    description: Check the live price of the item in your hand
+  discord:
+    description: Get the Blossom SMP Discord link
+    aliases: [dc]
+  daily:
+    description: Claim your daily reward
+    aliases: [dailyreward, reward]
+  ah:
+    description: Open the auction house
+    aliases: [auctionhouse, auction, auctions]
+
+permissions:
+  blossom.admin:
+    description: Use /eco to give, take, set and reset money, and reload the config
+    default: op
