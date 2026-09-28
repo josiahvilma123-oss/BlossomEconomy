@@ -11,7 +11,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -148,8 +147,8 @@ public final class Menus {
             if (stack == null || stack.getType().isAir()) {
                 continue;
             }
-            if (market.canSell(stack)) {
-                total += market.sell(stack.getType(), stack.getAmount());
+            if (market.canSell(stack) && market.quoteSell(stack) > 0) {
+                total += market.sell(stack);
                 count += stack.getAmount();
             } else {
                 unsold.add(stack.clone());
@@ -162,24 +161,6 @@ public final class Menus {
         finishSale(plugin, player, total, count, !unsold.isEmpty(), true);
     }
 
-    /** /sell all */
-    public static void sellAll(BlossomEconomy plugin, Player player) {
-        MarketManager market = plugin.getMarket();
-        PlayerInventory inventory = player.getInventory();
-        ItemStack[] storage = inventory.getStorageContents();
-        double total = 0;
-        int count = 0;
-        for (int slot = 0; slot < storage.length; slot++) {
-            ItemStack stack = storage[slot];
-            if (market.canSell(stack)) {
-                total += market.sell(stack.getType(), stack.getAmount());
-                count += stack.getAmount();
-                inventory.setItem(slot, null);
-            }
-        }
-        finishSale(plugin, player, total, count, false, false);
-    }
-
     /** /sell hand */
     public static void sellHand(BlossomEconomy plugin, Player player) {
         ItemStack hand = player.getInventory().getItemInMainHand();
@@ -187,13 +168,13 @@ public final class Menus {
             player.sendMessage(plugin.msg("hold-item"));
             return;
         }
-        if (!plugin.getMarket().canSell(hand)) {
+        if (!plugin.getMarket().canSell(hand) || plugin.getMarket().quoteSell(hand) <= 0) {
             player.sendMessage(plugin.msg("worthless"));
             fail(player);
             return;
         }
         int count = hand.getAmount();
-        double total = plugin.getMarket().sell(hand.getType(), count);
+        double total = plugin.getMarket().sell(hand);
         player.getInventory().setItemInMainHand(null);
         finishSale(plugin, player, total, count, false, false);
     }

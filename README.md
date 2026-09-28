@@ -11,7 +11,10 @@ The all-in-one economy plugin for Blossom SMP (Paper 1.21.11, needs Vault).
 - `/shop` - pink shop menu with live prices and ▲▼ trends
 - `/ah` - built-in auction house (`/ah sell <price>`, `/ah mine`, `/ah collect`), with tax and expiry
 - About 190 items priced by value
-- `/sell` (menu), `/sell hand`, `/sell all`
+- `/sell` sells the item in your hand
+- Items not in the price list are priced automatically from their crafting recipe
+- Holding an item shows its value above the hotbar
+- Damaged items sell for less, enchantments add value, enchanted books can be sold
 - `/worth` - live price of the item in your hand
 - `/eco give|take|set|reset <player> <amount>` `/eco reload` and `/eco resetmarket` (permission `blossom.admin`)
 - PvP kill rewards with an anti-farm cooldown

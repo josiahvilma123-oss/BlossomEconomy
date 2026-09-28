@@ -1,5 +1,5 @@
 # ============================================
-#   ❀ BlossomEconomy 2.0 - Blossom SMP ❀
+#   ❀ BlossomEconomy 2.2 - Blossom SMP ❀
 # ============================================
 # Colours: &a, &d, &l ... and hex colours like &#FF69B4
 # After editing, run: /eco reload
@@ -12,6 +12,31 @@ autosave-minutes: 5
 
 # Smallest amount allowed with /pay
 min-pay: 1
+
+# Can players in creative mode use /sell? (set to false so staff can't print money)
+allow-creative-selling: true
+
+# ----------------------------------------------
+# Automatic prices
+# Items NOT in the 'prices' list get a value from their crafting recipe,
+# e.g. a diamond pickaxe = 3 diamonds + 2 sticks. Items that can't be
+# crafted (spawn eggs, command blocks...) stay unsellable.
+# ----------------------------------------------
+auto-pricing:
+  enabled: true
+  # Crafted items are worth this % of their ingredients (below 100 stops craft-for-profit tricks)
+  craft-value-percent: 90
+
+# Extra money per enchantment level when selling (Sharpness V = 5 levels).
+# Enchanted books can be sold too. Damaged items sell for less.
+enchant-value-per-level: 5
+
+# ----------------------------------------------
+# Show the value of the item you're holding above the hotbar
+# ----------------------------------------------
+price-display:
+  enabled: true
+  format: "&7Worth: &a%each% &8each &8| &a%stack% &7stack &8| %trend%"
 
 # ----------------------------------------------
 # Live market
@@ -304,6 +329,16 @@ prices:
   END_STONE: 0.3
   CHORUS_FRUIT: 0.5
   POPPED_CHORUS_FRUIT: 0.5
+  # --- Plants ---
+  DANDELION: 0.2
+  POPPY: 0.2
+  CORNFLOWER: 0.2
+  LILY_OF_THE_VALLEY: 0.3
+  PINK_PETALS: 0.2
+  VINE: 0.1
+  LILY_PAD: 0.2
+  # --- Special ---
+  NETHERITE_UPGRADE_SMITHING_TEMPLATE: 150
   # --- Combat ---
   COBWEB: 3
   SHIELD: 4
@@ -348,9 +383,10 @@ messages:
   nothing-sold: "&cNone of those items can be sold."
   returned: "&7Items that can't be sold were given back to you."
   worth: "&f%item% &7sells for &a%amount% &7each &8(&a%stack% &7for this stack&8) &7Market: %trend%"
-  worthless: "&cThat item can't be sold. Try the auction house: &f/ah sell <price>"
+  worthless: "&cThat item has no value. Try the auction house: &f/ah sell <price>"
   hold-item: "&cHold an item in your hand first."
-  sell-usage: "&cUsage: /sell &7(menu)&c, /sell hand &7or &c/sell all"
+  sell-usage: "&cHold an item and type &f/sell&c."
+  creative-sell-blocked: "&cYou can't sell items while in creative mode."
   kill-reward: "&7You killed &f%player% &7and earned &a%amount%&7!"
   kill-lost: "&f%player% &7killed you and took &c%amount%&7."
   ah-usage: "&cUsage: /ah&7, &c/ah sell <price>&7, &c/ah mine &7or &c/ah collect"

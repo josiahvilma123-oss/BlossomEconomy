@@ -38,8 +38,8 @@ public class WorthCommand implements TabExecutor {
         }
         player.sendMessage(plugin.msg("worth",
                 "%item%", Text.itemName(hand.getType()),
-                "%amount%", Text.money(market.sellPrice(hand.getType())),
-                "%stack%", Text.money(market.quoteSell(hand.getType(), hand.getAmount())),
+                "%amount%", Text.money(market.sellPrice(hand)),
+                "%stack%", Text.money(market.quoteSell(hand)),
                 "%trend%", Text.color(market.trend(hand.getType()))));
         return true;
     }

@@ -11,6 +11,7 @@ import com.blossomsmp.economy.commands.WorthCommand;
 import com.blossomsmp.economy.listeners.KillRewardListener;
 import com.blossomsmp.economy.listeners.MenuListener;
 import com.blossomsmp.economy.listeners.PlayerListener;
+import com.blossomsmp.economy.listeners.PriceDisplayTask;
 import com.blossomsmp.economy.menus.MenuHolder;
 import com.blossomsmp.economy.menus.Menus;
 import com.blossomsmp.economy.util.Text;
@@ -75,6 +76,9 @@ public final class BlossomEconomy extends JavaPlugin {
 
         long recovery = 20L * 60L * Math.max(1, getConfig().getInt("market.recovery-minutes", 5));
         getServer().getScheduler().runTaskTimer(this, market::recover, recovery, recovery);
+
+        // Show the value of the held item above the hotbar
+        getServer().getScheduler().runTaskTimer(this, new PriceDisplayTask(this), 40L, 10L);
 
         // Expire old auction listings every minute
         getServer().getScheduler().runTaskTimer(this, auctions::checkExpired, 20L * 60L, 20L * 60L);
