@@ -19,5 +19,10 @@ public class PlayerListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         plugin.getEconomy().createAccount(player.getUniqueId(), player.getName());
+
+        int waiting = plugin.getAuctions().getReturns(player.getUniqueId()).size();
+        if (waiting > 0) {
+            player.sendMessage(plugin.msg("ah-collect-reminder", "%count%", String.valueOf(waiting)));
+        }
     }
 }

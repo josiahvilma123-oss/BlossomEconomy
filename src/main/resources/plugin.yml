@@ -1,9 +1,9 @@
 name: BlossomEconomy
-version: 1.0.0
+version: 2.0.0
 main: com.blossomsmp.economy.BlossomEconomy
 api-version: '1.21'
 author: BlossomSMP
-description: The all-in-one Blossom SMP economy (money, shop, sell, pay, baltop, kill rewards).
+description: The all-in-one Blossom SMP economy (money, live market, shop, sell, auction house, pay, baltop, kill rewards).
 depend: [Vault]
 
 commands:
@@ -23,7 +23,10 @@ commands:
   sell:
     description: Sell items (menu, hand or all)
   worth:
-    description: Check what the item in your hand sells for
+    description: Check the live price of the item in your hand
+  ah:
+    description: Open the auction house
+    aliases: [auctionhouse, auction, auctions]
 
 permissions:
   blossom.admin:

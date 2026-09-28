@@ -101,6 +101,21 @@ public final class Text {
         }
     }
 
+    /** 93784000 -> "1d 2h" */
+    public static String duration(long millis) {
+        long minutes = Math.max(0, millis) / 60000L;
+        long days = minutes / 1440;
+        long hours = (minutes % 1440) / 60;
+        long mins = minutes % 60;
+        if (days > 0) {
+            return days + "d " + hours + "h";
+        }
+        if (hours > 0) {
+            return hours + "h " + mins + "m";
+        }
+        return Math.max(1, mins) + "m";
+    }
+
     /** DIAMOND_SWORD -> Diamond Sword */
     public static String itemName(Material material) {
         String[] parts = material.name().toLowerCase(Locale.ROOT).split("_");

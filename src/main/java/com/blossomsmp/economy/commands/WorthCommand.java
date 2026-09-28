@@ -1,6 +1,7 @@
 package com.blossomsmp.economy.commands;
 
 import com.blossomsmp.economy.BlossomEconomy;
+import com.blossomsmp.economy.MarketManager;
 import com.blossomsmp.economy.util.Text;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-/** /worth - price of the item in your hand */
+/** /worth - live price of the item in your hand */
 public class WorthCommand implements TabExecutor {
 
     private final BlossomEconomy plugin;
@@ -30,15 +31,16 @@ public class WorthCommand implements TabExecutor {
             player.sendMessage(plugin.msg("hold-item"));
             return true;
         }
-        double each = plugin.getShop().getSellPrice(hand);
-        if (each <= 0) {
+        MarketManager market = plugin.getMarket();
+        if (!market.canSell(hand)) {
             player.sendMessage(plugin.msg("worthless"));
             return true;
         }
         player.sendMessage(plugin.msg("worth",
                 "%item%", Text.itemName(hand.getType()),
-                "%amount%", Text.money(each),
-                "%stack%", Text.money(each * hand.getAmount())));
+                "%amount%", Text.money(market.sellPrice(hand.getType())),
+                "%stack%", Text.money(market.quoteSell(hand.getType(), hand.getAmount())),
+                "%trend%", Text.color(market.trend(hand.getType()))));
         return true;
     }
 

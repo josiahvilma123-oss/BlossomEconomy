@@ -1,5 +1,6 @@
 package com.blossomsmp.economy;
 
+import com.blossomsmp.economy.commands.AuctionCommand;
 import com.blossomsmp.economy.commands.BalanceCommand;
 import com.blossomsmp.economy.commands.BaltopCommand;
 import com.blossomsmp.economy.commands.EcoCommand;
@@ -25,12 +26,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * BlossomEconomy - the all-in-one Blossom SMP economy.
- * Money, /shop, /sell, /pay, /baltop, /eco, /worth and PvP kill rewards.
+ * Money, live market prices, /shop, /sell, /ah, /pay, /baltop, /eco, /worth and PvP kill rewards.
  */
 public final class BlossomEconomy extends JavaPlugin {
 
     private EconomyManager economy;
+    private MarketManager market;
     private ShopManager shop;
+    private AuctionManager auctions;
 
     @Override
     public void onEnable() {
@@ -38,8 +41,13 @@ public final class BlossomEconomy extends JavaPlugin {
 
         economy = new EconomyManager(this);
         economy.load();
+        market = new MarketManager(this);
+        market.loadConfig();
+        market.loadData();
         shop = new ShopManager(this);
         shop.load();
+        auctions = new AuctionManager(this);
+        auctions.load();
 
         // Become the server's money for every Vault plugin
         getServer().getServicesManager().register(Economy.class, new VaultEconomy(this, economy),
@@ -52,6 +60,7 @@ public final class BlossomEconomy extends JavaPlugin {
         register("shop", new ShopCommand(this));
         register("sell", new SellCommand(this));
         register("worth", new WorthCommand(this));
+        register("ah", new AuctionCommand(this));
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new MenuListener(this), this);
@@ -59,7 +68,16 @@ public final class BlossomEconomy extends JavaPlugin {
         pm.registerEvents(new KillRewardListener(this), this);
 
         long interval = 20L * 60L * Math.max(1, getConfig().getInt("autosave-minutes", 5));
-        getServer().getScheduler().runTaskTimer(this, economy::saveIfDirty, interval, interval);
+        getServer().getScheduler().runTaskTimer(this, () -> {
+            economy.saveIfDirty();
+            market.saveIfDirty();
+        }, interval, interval);
+
+        long recovery = 20L * 60L * Math.max(1, getConfig().getInt("market.recovery-minutes", 5));
+        getServer().getScheduler().runTaskTimer(this, market::recover, recovery, recovery);
+
+        // Expire old auction listings every minute
+        getServer().getScheduler().runTaskTimer(this, auctions::checkExpired, 20L * 60L, 20L * 60L);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             economy.createAccount(player.getUniqueId(), player.getName());
@@ -73,7 +91,7 @@ public final class BlossomEconomy extends JavaPlugin {
         for (Player player : Bukkit.getOnlinePlayers()) {
             Inventory top = player.getOpenInventory().getTopInventory();
             if (top.getHolder() instanceof MenuHolder holder) {
-                if (holder.getType() == MenuHolder.Type.SELL && economy != null && shop != null) {
+                if (holder.getType() == MenuHolder.Type.SELL && economy != null && market != null) {
                     Menus.sellMenuContents(this, player, top);
                 }
                 player.closeInventory();
@@ -81,6 +99,12 @@ public final class BlossomEconomy extends JavaPlugin {
         }
         if (economy != null) {
             economy.save();
+        }
+        if (market != null) {
+            market.save();
+        }
+        if (auctions != null) {
+            auctions.save();
         }
         getServer().getServicesManager().unregisterAll(this);
     }
@@ -98,6 +122,7 @@ public final class BlossomEconomy extends JavaPlugin {
     /** /eco reload */
     public void reload() {
         reloadConfig();
+        market.loadConfig();
         shop.load();
     }
 
@@ -116,5 +141,13 @@ public final class BlossomEconomy extends JavaPlugin {
 
     public ShopManager getShop() {
         return shop;
+    }
+
+    public MarketManager getMarket() {
+        return market;
+    }
+
+    public AuctionManager getAuctions() {
+        return auctions;
     }
 }

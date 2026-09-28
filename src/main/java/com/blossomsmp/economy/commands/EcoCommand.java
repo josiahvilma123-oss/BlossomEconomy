@@ -14,7 +14,7 @@ import java.util.Locale;
 /** /eco <give|take|set|reset> <player> [amount]  and  /eco reload */
 public class EcoCommand implements TabExecutor {
 
-    private static final List<String> ACTIONS = List.of("give", "take", "set", "reset", "reload");
+    private static final List<String> ACTIONS = List.of("give", "take", "set", "reset", "reload", "resetmarket");
 
     private final BlossomEconomy plugin;
 
@@ -31,6 +31,11 @@ public class EcoCommand implements TabExecutor {
         if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
             plugin.reload();
             sender.sendMessage(plugin.msg("eco-reloaded"));
+            return true;
+        }
+        if (args.length == 1 && args[0].equalsIgnoreCase("resetmarket")) {
+            plugin.getMarket().resetAll();
+            sender.sendMessage(plugin.msg("market-reset"));
             return true;
         }
         if (args.length < 2) {
@@ -84,10 +89,11 @@ public class EcoCommand implements TabExecutor {
         if (args.length == 1) {
             return CommandUtil.filter(ACTIONS, args[0]);
         }
-        if (args.length == 2 && !args[0].equalsIgnoreCase("reload")) {
+        if (args.length == 2 && !args[0].equalsIgnoreCase("reload") && !args[0].equalsIgnoreCase("resetmarket")) {
             return CommandUtil.onlineNames(args[1]);
         }
-        if (args.length == 3 && !args[0].equalsIgnoreCase("reset") && !args[0].equalsIgnoreCase("reload")) {
+        if (args.length == 3 && !args[0].equalsIgnoreCase("reset") && !args[0].equalsIgnoreCase("reload")
+                && !args[0].equalsIgnoreCase("resetmarket")) {
             return CommandUtil.filter(List.of("100", "1k", "10k", "100k", "1m"), args[2]);
         }
         return List.of();

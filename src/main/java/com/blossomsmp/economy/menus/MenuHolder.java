@@ -12,25 +12,40 @@ public class MenuHolder implements InventoryHolder {
     public enum Type {
         SHOP_MAIN,
         SHOP_CATEGORY,
-        SELL
+        SELL,
+        AH_BROWSE,
+        AH_CONFIRM,
+        AH_MINE,
+        AH_COLLECT
     }
 
     private final Type type;
-    private final String categoryId;
+    private final String data;
+    private final int page;
     private final Map<Integer, String> slotActions = new HashMap<>();
     private Inventory inventory;
 
-    public MenuHolder(Type type, String categoryId) {
+    public MenuHolder(Type type, String data) {
+        this(type, data, 0);
+    }
+
+    public MenuHolder(Type type, String data, int page) {
         this.type = type;
-        this.categoryId = categoryId;
+        this.data = data;
+        this.page = page;
     }
 
     public Type getType() {
         return type;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    /** Category id for shop menus, listing id for the confirm menu. */
+    public String getData() {
+        return data;
+    }
+
+    public int getPage() {
+        return page;
     }
 
     public Map<Integer, String> getSlotActions() {

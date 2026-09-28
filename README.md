@@ -7,15 +7,18 @@ The all-in-one economy plugin for Blossom SMP (Paper 1.21.11, needs Vault).
 - `/balance [player]` (aliases `/bal`, `/money`)
 - `/pay <player> <amount>` (supports `2.5k`, `1m`)
 - `/baltop` - top 10 richest players
-- `/shop` - pink shop menu with categories and prices already set
+- **Live market**: selling an item lowers its price, buying raises it, prices slowly recover
+- `/shop` - pink shop menu with live prices and ▲▼ trends
+- `/ah` - built-in auction house (`/ah sell <price>`, `/ah mine`, `/ah collect`), with tax and expiry
+- About 190 items priced by value
 - `/sell` (menu), `/sell hand`, `/sell all`
-- `/worth` - what the item in your hand sells for
-- `/eco give|take|set|reset <player> <amount>` and `/eco reload` (permission `blossom.admin`)
+- `/worth` - live price of the item in your hand
+- `/eco give|take|set|reset <player> <amount>` `/eco reload` and `/eco resetmarket` (permission `blossom.admin`)
 - PvP kill rewards with an anti-farm cooldown
 - Starting balance for new players
 - Everything (prices, messages, colours) is editable in `config.yml`
 
-Balances are saved in `plugins/BlossomEconomy/balances.yml`.
+Data files in `plugins/BlossomEconomy/`: `balances.yml`, `market.yml`, `auctions.yml`.
 
 ## Building the .jar
 
@@ -33,7 +36,8 @@ Balances are saved in `plugins/BlossomEconomy/balances.yml`.
 
 ## Installing on the server
 1. Make a backup.
-2. Remove the old `BlossomSMP.jar` and `EconomyShopGUI` if installed.
-3. In `plugins/Essentials/config.yml` add to `disabled-commands`: pay, eco, baltop, balance, sell, worth.
+2. Remove the old `BlossomSMP.jar`, `EconomyShopGUI`, `zAuctionHouse` and `zMenu` if installed.
+3. EssentialsX is not needed.
 4. Remove the `sell: - sellgui` alias from `commands.yml`.
 5. Put `BlossomEconomy.jar` in `plugins` and restart.
+6. Upgrading from 1.0: delete the old `plugins/BlossomEconomy/config.yml` (keep `balances.yml`) so the new config is created.
