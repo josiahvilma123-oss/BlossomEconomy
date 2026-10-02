@@ -3,7 +3,6 @@ package com.blossomsmp.economy.listeners;
 import com.blossomsmp.economy.BlossomEconomy;
 import com.blossomsmp.economy.MarketManager;
 import com.blossomsmp.economy.util.Text;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -19,12 +18,6 @@ import java.util.UUID;
  * above the hotbar for a few seconds. Runs every half second.
  */
 public class PriceDisplayTask implements Runnable {
-
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.builder()
-            .character('\u00A7')
-            .hexColors()
-            .useUnusualXRepeatedCharacterHexFormat()
-            .build();
 
     private final BlossomEconomy plugin;
     private final Map<UUID, String> lastShown = new HashMap<>();
@@ -59,7 +52,7 @@ public class PriceDisplayTask implements Runnable {
                     .replace("%stack%", Text.money(market.quoteSell(hand)))
                     .replace("%trend%", market.trend(hand.getType()))
                     .replace("%item%", Text.itemName(hand.getType()));
-            player.sendActionBar(LEGACY.deserialize(Text.color(text)));
+            player.sendActionBar(Text.component(text));
         }
         lastShown.keySet().retainAll(online);
     }

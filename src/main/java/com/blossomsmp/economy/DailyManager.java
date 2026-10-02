@@ -93,6 +93,23 @@ public class DailyManager {
         return Math.max(0, entry.lastClaim() + cooldownMillis() - System.currentTimeMillis());
     }
 
+    /** The streak a player has right now (0 if they never claimed or their streak ran out). */
+    public int currentStreak(UUID player) {
+        Entry entry = data.get(player);
+        if (entry == null) {
+            return 0;
+        }
+        if (System.currentTimeMillis() - entry.lastClaim() > resetMillis()) {
+            return 0;
+        }
+        return entry.streak();
+    }
+
+    /** What the next /daily will pay this player. */
+    public double nextReward(UUID player) {
+        return rewardFor(currentStreak(player) + 1);
+    }
+
     public ClaimResult claim(UUID player) {
         long now = System.currentTimeMillis();
         long wait = timeUntilClaim(player);

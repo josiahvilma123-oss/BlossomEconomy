@@ -1,5 +1,7 @@
 package com.blossomsmp.economy.util;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
@@ -18,7 +20,18 @@ public final class Text {
     private static final String[] SUFFIXES = {"", "K", "M", "B", "T"};
     private static final double MAX_AMOUNT = 1_000_000_000_000_000D; // 1 quadrillion
 
+    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.builder()
+            .character(ChatColor.COLOR_CHAR)
+            .hexColors()
+            .useUnusualXRepeatedCharacterHexFormat()
+            .build();
+
     private Text() {
+    }
+
+    /** Turns "&d&lHello &#FF69B4world" into a coloured chat component. */
+    public static Component component(String input) {
+        return LEGACY.deserialize(color(input));
     }
 
     /** Translates &-codes and &#RRGGBB hex colours. */

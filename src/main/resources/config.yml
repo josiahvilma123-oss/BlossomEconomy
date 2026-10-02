@@ -1,5 +1,5 @@
 # ============================================
-#   ❀ BlossomEconomy 2.3 - Blossom SMP ❀
+#   ❀ BlossomEconomy 2.4 - Blossom SMP ❀
 # ============================================
 # Colours: &a, &d, &l ... and hex colours like &#FF69B4
 # After editing, run: /eco reload
@@ -55,6 +55,15 @@ market:
   # Every recovery-minutes, prices move this % of the way back to normal
   recovery-percent: 5
   recovery-minutes: 5
+
+# ----------------------------------------------
+# Discord (/discord)
+# ----------------------------------------------
+discord:
+  link: "https://discord.gg/EbMR5cU9c2"
+  message: "&#FF69B4&l❀ &7Join the &#FF69B4Blossom SMP &7Discord for events, giveaways and support!"
+  button: "&#FF69B4&l[CLICK TO JOIN]"
+  hover: "&7Click to open &f%link%"
 
 # ----------------------------------------------
 # Daily rewards (/daily)

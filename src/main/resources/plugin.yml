@@ -1,10 +1,11 @@
 name: BlossomEconomy
-version: 2.3.0
+version: 2.5.0
 main: com.blossomsmp.economy.BlossomEconomy
 api-version: '1.21'
 author: BlossomSMP
 description: The all-in-one Blossom SMP economy (money, live market, shop, sell, auction house, pay, baltop, kill rewards).
 depend: [Vault]
+softdepend: [PlaceholderAPI]
 
 commands:
   balance:
@@ -24,6 +25,9 @@ commands:
     description: Sell the item in your hand
   worth:
     description: Check the live price of the item in your hand
+  discord:
+    description: Get the Blossom SMP Discord link
+    aliases: [dc]
   daily:
     description: Claim your daily reward
     aliases: [dailyreward, reward]

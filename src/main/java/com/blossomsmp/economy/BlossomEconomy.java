@@ -3,6 +3,7 @@ package com.blossomsmp.economy;
 import com.blossomsmp.economy.commands.AuctionCommand;
 import com.blossomsmp.economy.commands.BalanceCommand;
 import com.blossomsmp.economy.commands.DailyCommand;
+import com.blossomsmp.economy.commands.DiscordCommand;
 import com.blossomsmp.economy.commands.BaltopCommand;
 import com.blossomsmp.economy.commands.EcoCommand;
 import com.blossomsmp.economy.commands.PayCommand;
@@ -67,6 +68,7 @@ public final class BlossomEconomy extends JavaPlugin {
         register("worth", new WorthCommand(this));
         register("ah", new AuctionCommand(this));
         register("daily", new DailyCommand(this));
+        register("discord", new DiscordCommand(this));
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new MenuListener(this), this);
@@ -90,6 +92,11 @@ public final class BlossomEconomy extends JavaPlugin {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             economy.createAccount(player.getUniqueId(), player.getName());
+        }
+        // Share placeholders (%blossom_streak% etc.) with the scoreboard
+        if (pm.getPlugin("PlaceholderAPI") != null) {
+            new com.blossomsmp.economy.hooks.BlossomPlaceholders(this).register();
+            getLogger().info("Hooked into PlaceholderAPI (%blossom_...% placeholders).");
         }
         getLogger().info("BlossomEconomy is enabled and registered with Vault.");
     }
