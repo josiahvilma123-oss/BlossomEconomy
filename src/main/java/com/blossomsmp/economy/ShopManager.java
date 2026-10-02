@@ -39,7 +39,7 @@ public class ShopManager {
             List<Material> items = new ArrayList<>();
             for (String key : section.getStringList("items")) {
                 Material material = Material.matchMaterial(key);
-                if (material == null || !plugin.getMarket().hasPrice(material)) {
+                if (material == null || !plugin.getMarket().canBuy(material)) {
                     plugin.getLogger().warning("Shop: '" + key + "' in category " + id
                             + " is not a valid item or has no price under 'prices'.");
                     continue;

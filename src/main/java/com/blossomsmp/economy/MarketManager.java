@@ -59,6 +59,8 @@ public class MarketManager {
     private double maxFactor = 3.0;
     private double recoveryPercent = 5;
     private boolean autoPricing = true;
+    /** Fixed shop buy prices from the buy-prices section (ignore buy-multiplier). */
+    private final Map<Material, Double> buyOverrides = new EnumMap<>(Material.class);
     private double craftMultiplier = 0.9;
     private double enchantValuePerLevel = 5;
     private boolean dirty = false;
@@ -97,7 +99,20 @@ public class MarketManager {
                 worth.put(material, value);
             }
         }
-        plugin.getLogger().info("Loaded " + worth.size() + " item prices.");
+        buyOverrides.clear();
+        ConfigurationSection buyPrices = config.getConfigurationSection("buy-prices");
+        if (buyPrices != null) {
+            for (String key : buyPrices.getKeys(false)) {
+                Material material = Material.matchMaterial(key);
+                double value = buyPrices.getDouble(key);
+                if (material == null || !material.isItem() || material.isAir() || value <= 0) {
+                    plugin.getLogger().warning("Buy prices: skipping invalid item '" + key + "'");
+                    continue;
+                }
+                buyOverrides.put(material, value);
+            }
+        }
+        plugin.getLogger().info("Loaded " + worth.size() + " item prices and " + buyOverrides.size() + " fixed buy prices.");
     }
 
     public void loadData() {
@@ -305,9 +320,23 @@ public class MarketManager {
         return round(getWorth(material) * getFactor(material));
     }
 
+    /** Normal shop price of one item before market changes. */
+    private double baseBuy(Material material) {
+        Double fixed = buyOverrides.get(material);
+        if (fixed != null) {
+            return fixed;
+        }
+        return getWorth(material) * buyMultiplier;
+    }
+
+    /** True if the shop can sell this item (it has a price or a fixed buy price). */
+    public boolean canBuy(Material material) {
+        return baseBuy(material) > 0;
+    }
+
     /** Current buy price for one item. */
     public double buyPrice(Material material) {
-        return round(getWorth(material) * buyMultiplier * Math.max(1.0, getFactor(material)));
+        return round(baseBuy(material) * Math.max(1.0, getFactor(material)));
     }
 
     /** Current sell price for ONE of this exact item (damage and enchantments included). */
@@ -339,7 +368,7 @@ public class MarketManager {
 
     private double simulate(Material material, int amount, boolean selling, boolean apply,
                             double multiplier, double bonus) {
-        double base = getWorth(material) * multiplier;
+        double base = selling ? getWorth(material) * multiplier : baseBuy(material);
         if ((base <= 0 && bonus <= 0) || amount <= 0) {
             return 0;
         }
@@ -352,7 +381,7 @@ public class MarketManager {
                     factor = Math.max(minFactor, factor * (1 - impact));
                 }
             } else {
-                total += base * buyMultiplier * Math.max(1.0, factor);
+                total += base * Math.max(1.0, factor);
                 factor = Math.min(maxFactor, factor * (1 + impact));
             }
         }
